@@ -79,9 +79,31 @@ const attendanceByTime = [
 // Colors for the charts
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"]
 
+const events = [
+  {
+    eventId: 1,
+    eventTitle: "Annual Tech Conference 2025",
+    eventDate: "Apr 15, 2025",
+    venue: "Main Auditorium",
+    description: "A major conference for technology leaders and students.",
+    status: "Upcoming",
+    registeredCount: 120,
+  },
+  {
+    eventId: 2,
+    eventTitle: "Research Symposium 2025",
+    eventDate: "Apr 25, 2025",
+    venue: "Science Building",
+    description: "Graduate students present their research findings.",
+    status: "Upcoming",
+    registeredCount: 80,
+  },
+]
+
 export default function DashboardPage() {
   const [timePeriod, setTimePeriod] = useState("last-30-days")
   const [isLoaded, setIsLoaded] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState(null)
 
   useEffect(() => {
     // Trigger animations after component mounts
@@ -383,6 +405,46 @@ export default function DashboardPage() {
               </TabsContent>
             </Tabs>
           </div>
+
+          {selectedEvent ? (
+            <div className="max-w-xl mx-auto bg-white rounded-lg shadow p-8 my-8">
+              <button
+                className="mb-4 text-blue-600 hover:underline"
+                onClick={() => setSelectedEvent(null)}
+              >
+                ← Back to Events
+              </button>
+              <h2 className="text-2xl font-bold mb-2">{selectedEvent.eventTitle}</h2>
+              <p className="text-gray-600 mb-2">{selectedEvent.eventDate} • {selectedEvent.venue}</p>
+              <div className="mt-4">
+                <p><strong>Description:</strong> {selectedEvent.description}</p>
+                <p className="mt-2"><strong>Registered:</strong> {selectedEvent.registeredCount}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="my-8">
+              <h2 className="text-xl font-bold mb-4">Events</h2>
+              <div className="space-y-4">
+                {events.map(event => (
+                  <div
+                    key={event.eventId}
+                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                  >
+                    <div>
+                      <div className="font-medium">{event.eventTitle}</div>
+                      <div className="text-sm text-gray-600">{event.eventDate} • {event.venue}</div>
+                    </div>
+                    <button
+                      className="p-2 border rounded hover:bg-gray-100"
+                      onClick={() => setSelectedEvent(event)}
+                    >
+                      👁️
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
